@@ -2,7 +2,6 @@ from telegram.ext import Updater
 from telegram.ext import CommandHandler, MessageHandler,Filters
 import os
 TOKEN=os.environ.get("TELEGRAM_ID")
-#TOKEN="5594910284:AAG_GPQddNbfJGjgr0av1xcDadwXQc5X9Sw"
 def start(update,context):
     yourname=update.message.chat.first_name
     msg="Hi"+yourname+"! Welcome to Lingua Franca Vocab Bot"

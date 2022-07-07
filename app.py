@@ -11,7 +11,7 @@ def mimic(update,context):
     context.bot.send_message(update.message.chat.id,update.message.text)
 
 def details(update,context):
-    context.bot.send_message(update.message.chat.id,update.message)
+    context.bot.send_message(update.message.chat.id,update.message.text)
 
 def error(update,context):
     context.bot.send_message("OOps! Error encountered")

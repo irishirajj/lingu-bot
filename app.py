@@ -1,5 +1,5 @@
-from telegram.ext import Updater,Dispatcher
-from telegram.ext import CommandHandler, MessageHandler,filters
+from telegram.ext import Updater
+from telegram.ext import CommandHandler, MessageHandler,Filters
 import os
 TOKEN=os.environ.get("TELEGRAM_ID")
 
@@ -14,23 +14,24 @@ def mimic(update,context):
 def details(update,context):
     context.bot.send_message(update.message.chat.id,update.message)
 
-def details(update,context):
+def error(update,context):
     context.bot.send_message("OOps! Error encountered")
 def main():
     updater=Updater(token=TOKEN)   #updater
     dp=updater.dispatcher          #dispatcher
 
     ###################   Handlers :
-    dp.add_handler(CommandHandler("/start",start))
-    dp.add_handler(MessageHandler(filters.text,mimic))
-    dp.add_handler(CommandHandler("/details"),details)
-    dp.add_error_handler(os.error)
+    dp.add_handler(CommandHandler("start",start))
+    dp.add_handler(MessageHandler(Filters.text,mimic))
+    dp.add_handler(CommandHandler("details",details))
+    dp.add_error_handler(error)
 
     #updater.start_polling()
     updater.start_webhook(listen="0.0.0.0",
-                          port=os.environ("PORT",443),
+                          port=os.environ.get("PORT",443),
                           url_path=TOKEN,
-                          webhook_url="https://lingu-bot.herokuapp.com"+TOKEN)
+                          webhook_url="https://lingu-bot.herokuapp.com"+TOKEN
+                          )
 
     updater.idle()
 

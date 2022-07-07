@@ -35,6 +35,6 @@ def main():
                           )
 
     updater.idle()
-#timepass
+
 if __name__=='__main__':
     main()

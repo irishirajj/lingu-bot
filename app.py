@@ -13,8 +13,8 @@ def mimic(update,context):
 def details(update,context):
     context.bot.send_message(update.message.chat.id,update.message.text)
 
-def error(update,context):
-    context.bot.send_message("OOps! Error encountered")
+#def error(update,context):
+    #context.bot.send_message("OOps! Error encountered")
 def main():
     updater=Updater(token=TOKEN)   #updater
     dp=updater.dispatcher          #dispatcher
@@ -25,7 +25,7 @@ def main():
 
     dp.add_handler(MessageHandler(Filters.text,mimic))
 
-    dp.add_error_handler(error)
+    #dp.add_error_handler(error)
 
     updater.start_polling()
     updater.start_webhook(listen="0.0.0.0",

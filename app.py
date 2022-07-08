@@ -4,6 +4,7 @@ from telegram.ext import CommandHandler, MessageHandler
 import os
 from telegram import Update
 from telegram.ext import CallbackContext, ApplicationHandlerStop, TypeHandler, Application
+SPECIAL_USERS = [2060060048, 172380183, 1827979793]  # Allows users
 
 TOKEN="5332532839:AAHkaINudmaGOwCMWXW9-IBFqY3ye-SMmeE"
 def start(update,context):
@@ -18,15 +19,22 @@ def error(update,context):
 def details(update,context):
     context.bot.send_message(update.message.chat.id,update.message.text)
 
+#async def callback(update: Update, context: CallbackContext):
+    #"""Handle the update"""
+    #await start(update, context)
+    #raise ApplicationHandlerStop # Only if you DON'T want other handlers to handle this update
+
 async def callback(update: Update, context: CallbackContext):
     """Handle the update"""
     await start(update, context)
     raise ApplicationHandlerStop # Only if you DON'T want other handlers to handle this update
 
 async def callback(update: Update, context: CallbackContext):
-    """Handle the update"""
-    await start(update, context)
-    raise ApplicationHandlerStop # Only if you DON'T want other handlers to handle this update
+    if update.effective_user.user_id in SPECIAL_USERS:
+        pass
+    else:
+        await update.effective_message.reply_text("Hey! You are not allowed to use me!")
+        raise ApplicationHandlerStop
 
 app = Application.builder().token("TOKEN").build()
 handler = TypeHandler(Update, callback) # Making a handler for the type Update

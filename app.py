@@ -1,7 +1,11 @@
 from telegram.ext import Updater
-from telegram.ext import CommandHandler, MessageHandler,Filters
+from telegram.ext import CommandHandler, MessageHandler
+
 import os
-TOKEN=os.environ.get("TELEGRAM_ID")
+from telegram import Update
+from telegram.ext import CallbackContext, ApplicationHandlerStop, TypeHandler, Application
+
+TOKEN="5332532839:AAHkaINudmaGOwCMWXW9-IBFqY3ye-SMmeE"
 def start(update,context):
     yourname=update.message.chat.first_name
     msg="Hi"+yourname+"! Welcome to Lingua Franca Vocab Bot"
@@ -9,12 +13,19 @@ def start(update,context):
 
 def mimic(update,context):
     context.bot.send_message(update.message.chat.id,update.message.text)
-
+def error(update,context):
+    context.bot.send_message("oops ! Error aa gya")
 def details(update,context):
     context.bot.send_message(update.message.chat.id,update.message.text)
 
-def error(update,context):
-    context.bot.send_message(update.message.chat.it, "OOps! Error encountered")
+async def callback(update: Update, context: CallbackContext):
+    """Handle the update"""
+    await start(update, context)
+    raise ApplicationHandlerStop # Only if you DON'T want other handlers to handle this update
+app = Application.builder().token("TOKEN").build()
+handler = TypeHandler(Update, callback) # Making a handler for the type Update
+app.add_handler(handler, -1) # Default is 0, so we are giving it a number below 0
+# Add other handlers and start your bot.
 
 def main():
     updater=Updater(token=TOKEN)   #updater
@@ -24,7 +35,7 @@ def main():
     dp.add_handler(CommandHandler("start",start))
     dp.add_handler(CommandHandler("details", details))
 
-    dp.add_handler(MessageHandler(Filters.text,mimic))
+
 
     dp.add_error_handler(error)
 

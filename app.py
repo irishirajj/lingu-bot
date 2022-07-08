@@ -31,7 +31,7 @@ handler = TypeHandler(Update, callback) # Making a handler for the type Update
 app.add_handler(handler, -1) # Default is 0, so we are giving it a number below 0
 # Add other handlers and start your bot.
 
-updater=Updater(TOKEN)   #updater
+updater=Updater(TOKEN,context=True)   #updater
 dp=updater.dispatcher          #dispatcher
 
     ###################   Handlers :

@@ -22,31 +22,38 @@ async def callback(update: Update, context: CallbackContext):
     """Handle the update"""
     await start(update, context)
     raise ApplicationHandlerStop # Only if you DON'T want other handlers to handle this update
+
+async def callback(update: Update, context: CallbackContext):
+    """Handle the update"""
+    await start(update, context)
+    raise ApplicationHandlerStop # Only if you DON'T want other handlers to handle this update
+
 app = Application.builder().token("TOKEN").build()
 handler = TypeHandler(Update, callback) # Making a handler for the type Update
 app.add_handler(handler, -1) # Default is 0, so we are giving it a number below 0
 # Add other handlers and start your bot.
 
-def main():
-    updater=Updater(token=TOKEN)   #updater
-    dp=updater.dispatcher          #dispatcher
+updater=Updater(token=TOKEN)   #updater
+dp=updater.dispatcher          #dispatcher
 
     ###################   Handlers :
-    dp.add_handler(CommandHandler("start",start))
-    dp.add_handler(CommandHandler("details", details))
+dp.add_handler(CommandHandler("start",start))
+dp.add_handler(CommandHandler("details", details))
 
 
 
-    dp.add_error_handler(error)
-
+dp.add_error_handler(error)
+app = Application.builder().token("TOKEN").build()
+handler = TypeHandler(Update, callback) # Making a handler for the type Update
+app.add_handler(handler, -1) # Default is 0, so we are giving it a number below 0
+# Add other handlers and start your bot.
     #updater.start_polling()
-    updater.start_webhook(listen="0.0.0.0",
+updater.start_webhook(listen="0.0.0.0",
                           port=os.environ.get("PORT",443),
                           url_path=TOKEN,
                           webhook_url="https://lingu-bot.herokuapp.com/"+TOKEN
                           )
 
-    updater.idle()
+updater.idle()
 
-if __name__=='__main__':
-    main()
+

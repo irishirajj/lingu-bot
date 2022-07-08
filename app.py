@@ -26,7 +26,7 @@ async def callback(update: Update, context: CallbackContext):
         await update.effective_message.reply_text("Hey! You are not allowed to use me!")
         raise ApplicationHandlerStop
 
-app = Application.builder().token("TOKEN").build()
+app = Application.builder().token(TOKEN).build()
 handler = TypeHandler(Update, callback) # Making a handler for the type Update
 app.add_handler(handler, -1) # Default is 0, so we are giving it a number below 0
 # Add other handlers and start your bot.

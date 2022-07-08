@@ -12,22 +12,11 @@ def start(update,context):
     msg="Hi"+yourname+"! Welcome to Lingua Franca Vocab Bot"
     context.bot.send_message(update.message.chat.id,msg)
 
-def mimic(update,context):
-    context.bot.send_message(update.message.chat.id,update.message.text)
 def error(update,context):
     context.bot.send_message("oops ! Error aa gya")
 def details(update,context):
     context.bot.send_message(update.message.chat.id,update.message.text)
 
-#async def callback(update: Update, context: CallbackContext):
-    #"""Handle the update"""
-    #await start(update, context)
-    #raise ApplicationHandlerStop # Only if you DON'T want other handlers to handle this update
-
-async def callback(update: Update, context: CallbackContext):
-    """Handle the update"""
-    await start(update, context)
-    raise ApplicationHandlerStop # Only if you DON'T want other handlers to handle this update
 
 async def callback(update: Update, context: CallbackContext):
     if update.effective_user.user_id in SPECIAL_USERS:

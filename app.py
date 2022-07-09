@@ -1,57 +1,41 @@
 from telegram.ext import Updater
-from telegram.ext import CommandHandler, MessageHandler
-
+from telegram.ext import CommandHandler, MessageHandler,Filters
 import os
-from telegram import Update
-from telegram.ext import CallbackContext, ApplicationHandlerStop, TypeHandler, Application
-SPECIAL_USERS = [2060060048, 172380183, 1827979793]  # Allows users
-
-TOKEN="5594910284:AAG_GPQddNbfJGjgr0av1xcDadwXQc5X9Sw"
+TOKEN=os.environ.get("TELEGRAM_ID")
 def start(update,context):
     yourname=update.message.chat.first_name
     msg="Hi"+yourname+"! Welcome to Lingua Franca Vocab Bot"
     context.bot.send_message(update.message.chat.id,msg)
 
-def error(update,context):
-    context.bot.send_message("oops ! Error aa gya")
+def mimic(update,context):
+    context.bot.send_message(update.message.chat.id,update.message.text)
+
 def details(update,context):
     context.bot.send_message(update.message.chat.id,update.message.text)
 
+def error(update,context):
+    context.bot.send_message(update.message.chat.it, "OOps! Error encountered")
 
-async def callback(update: Update, context: CallbackContext):
-    if update.effective_user.user_id in SPECIAL_USERS:
-        pass
-    else:
-        context.bot.send_message(update.message.chat.id, update.message.text)
-        await update.effective_message.reply_text("Hey! You are not allowed to use me!")
-        raise ApplicationHandlerStop
-
-app = Application.builder().token(TOKEN).build()
-handler = TypeHandler(Update, callback) # Making a handler for the type Update
-app.add_handler(handler, -1) # Default is 0, so we are giving it a number below 0
-# Add other handlers and start your bot.
-
-updater=Updater(TOKEN,context=True)   #updater
-dp=updater.dispatcher          #dispatcher
+def main():
+    updater=Updater(token=TOKEN)   #updater
+    dp=updater.dispatcher          #dispatcher
 
     ###################   Handlers :
-dp.add_handler(CommandHandler("start",start))
-dp.add_handler(CommandHandler("details", details))
+    dp.add_handler(CommandHandler("start",start))
+    dp.add_handler(CommandHandler("details", details))
 
+    dp.add_handler(MessageHandler(Filters.text,mimic))
 
+    dp.add_error_handler(error)
 
-dp.add_error_handler(error)
-app = Application.builder().token(TOKEN).build()
-handler = TypeHandler(Update, callback) # Making a handler for the type Update
-app.add_handler(handler, -1) # Default is 0, so we are giving it a number below 0
-# Add other handlers and start your bot.
     #updater.start_polling()
-updater.start_webhook(listen="0.0.0.0",
+    updater.start_webhook(listen="0.0.0.0",
                           port=os.environ.get("PORT",443),
                           url_path=TOKEN,
                           webhook_url="https://lingu-bot.herokuapp.com/"+TOKEN
                           )
 
-updater.idle()
+    updater.idle()
 
-
+if __name__=='__main__':
+    main()
